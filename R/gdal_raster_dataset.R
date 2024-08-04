@@ -1,0 +1,1 @@
+setClass("GDALRasterDataset", contains = "GDALDataset")

@@ -1,0 +1,8 @@
+^tidygdal\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
+^LICENSE\.md$
+^\.gitattributes$
+^config\.log$
+^config\.status$
+^compile\_flags\.txt$

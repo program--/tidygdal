@@ -1,0 +1,10 @@
+.Rproj.user
+
+src/*.o
+src/*.so
+src/*.dll
+src/Makevars
+config.log
+config.status
+autom4te.cache
+compile_flags.txt
