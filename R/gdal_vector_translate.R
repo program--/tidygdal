@@ -4,8 +4,8 @@ gdal_vector_translate <- function(options, quiet = !interactive()) {
     stop("`options` must be a GDALVectorTranslateOptions object, not ", paste0(class(options), collapse = "/"))
   }
 
-  if (quiet) {
-    options <- c(options, "-quiet")
+  if (!quiet) {
+    options <- c(options, "-progress")
   }
 
   result <- .Call(
