@@ -18,7 +18,7 @@ CALL_METHOD_DEFS_BEGIN
     CALL_METHOD_DEF(gdal_c_is_raster, 1)
     CALL_METHOD_DEF(gdal_c_is_vector, 1)
     CALL_METHOD_DEF(gdal_c_vector_layers_info, 1)
-    CALL_METHOD_DEF(gdal_c_vector_translate, 3)
+    CALL_METHOD_DEF(gdal_c_vector_translate, 4)
     CALL_METHOD_DEF(gdal_c_vector_layer_geomtype, 2)
     CALL_METHOD_DEF(gdal_c_vector_layer_feature_count, 2)
     CALL_METHOD_DEF(gdal_c_vector_layer_field_count, 2)

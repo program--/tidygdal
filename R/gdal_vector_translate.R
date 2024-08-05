@@ -1,14 +1,19 @@
 #' @export
-gdal_vector_translate <- function(options) {
+gdal_vector_translate <- function(options, quiet = !interactive()) {
   if (!inherits(options, "GDALVectorTranslateOptions")) {
     stop("`options` must be a GDALVectorTranslateOptions object, not ", paste0(class(options), collapse = "/"))
+  }
+
+  if (quiet) {
+    options <- c(options, "-quiet")
   }
 
   result <- .Call(
     gdal_c_vector_translate,
     attr(options, "input", TRUE),
     attr(options, "output", TRUE),
-    as.character(options)
+    as.character(options),
+    quiet
   )
 
   if (inherits(result, "externalptr")) {

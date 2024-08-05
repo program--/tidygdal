@@ -4,6 +4,8 @@
 #include <ogr_srs_api.h>
 #include <gdal_utils.h>
 
+#include <cli/progress.h>
+
 OGRLayerH gdal_c_get_layer(SEXP externalPtr, SEXP layer) {
     GDALDatasetH ds = NULL; 
     GDAL_R_UNWRAP_OR_NULL(ds, externalPtr);
@@ -112,13 +114,26 @@ SEXP gdal_c_vector_layers_info(SEXP externalPtr) {
     return output;
 }
 
-SEXP gdal_c_vector_translate(SEXP input, SEXP output, SEXP options) {
+int gdal_c_vector_translate_pb_callback(double dfComplete, CPL_UNUSED const char* pszMessage, void *pProgressArg) {
+    if (CLI_SHOULD_TICK)
+        cli_progress_set(pProgressArg, dfComplete * 10);
+
+    return TRUE;
+}
+
+SEXP gdal_c_vector_translate(SEXP input, SEXP output, SEXP options, SEXP quiet) {
     int error = FALSE;
     GDALDatasetH result = NULL;
     GDALDatasetH dst = NULL;
     GDALDatasetH src = NULL;
     const char* dst_path = NULL;
     GDALVectorTranslateOptions* gdal_opts = NULL;
+    SEXP pb = NULL;
+
+    if (!Rf_isLogical(quiet)) {
+        Rf_error("Argument `quiet` is not a logical");
+        return R_NilValue;
+    }
     
     // Handle input
     if (Rf_isS4(input)) {
@@ -168,9 +183,20 @@ SEXP gdal_c_vector_translate(SEXP input, SEXP output, SEXP options) {
         if (gdal_opts == NULL) {
             Rf_error("unable to process arguments\n");
         }
+
+        if (!Rf_asLogical(quiet)) {
+            pb = PROTECT(cli_progress_bar(100.0, NULL));
+            
+            GDALVectorTranslateOptionsSetProgress(gdal_opts, gdal_c_vector_translate_pb_callback, pb);
+        }
     }
 
     result = GDALVectorTranslate(dst_path, dst, 1, &src, gdal_opts, &error);
+
+    if (!Rf_asLogical(quiet)) {
+        cli_progress_done(pb);
+        UNPROTECT(1);
+    }
 
     if (result == NULL) {
         Rf_error("GDALVectorTranslate returned error: %s", CPLGetLastErrorMsg());

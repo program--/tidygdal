@@ -15,7 +15,7 @@ gdal_vector <- function(path) {
 
 #' @importMethodsFrom methods show
 #' @export
-setMethod("show", "GDALDataset", function(object) {
+setMethod("show", "GDALVectorDataset", function(object) {
   info <- gdal_vector_layers(object)
 
   cat(

@@ -30,4 +30,4 @@ SEXP gdal_c_vector_layer_feature_count(SEXP externalPtr, SEXP layer);
 SEXP gdal_c_vector_layer_field_count(SEXP externalPtr, SEXP layer);
 SEXP gdal_c_vector_layer_srs_name(SEXP externalPtr, SEXP layer);
 SEXP gdal_c_vector_layers_info(SEXP externalPtr);
-SEXP gdal_c_vector_translate(SEXP input, SEXP output, SEXP options);
+SEXP gdal_c_vector_translate(SEXP input, SEXP output, SEXP options, SEXP quiet);
