@@ -17,6 +17,8 @@ void gdal_c_release_dataset(SEXP externalPtr);
 
 /* Common API */
 SEXP gdal_c_open_dataset(SEXP path, SEXP openFlags);
+SEXP gdal_c_set_config_option(SEXP key, SEXP value);
+SEXP gdal_c_get_config_options();
 
 
 /* Raster API */
